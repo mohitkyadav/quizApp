@@ -1,1 +1,5 @@
-django==1.9
+django
+channels==1.1.5
+asgi_redis
+asgiref
+websocket-client
