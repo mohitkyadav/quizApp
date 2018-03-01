@@ -1,5 +1,6 @@
-django
+django==1.11.2
 channels==1.1.5
 asgi_redis
 asgiref
 websocket-client
+pypiwin32
