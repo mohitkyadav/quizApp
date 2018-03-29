@@ -18,3 +18,16 @@ channel_routing = [
     # HTTP handling - e.g. long-polling - you can do it here and route by path, and let the rest
     # fall through to normal views.
 ]
+
+
+# from channels import route
+#
+#
+# # This function will display all messages received in the console
+# def message_handler(message):
+#     print(message['text'])
+#
+#
+# channel_routing = [
+#     route("websocket.receive", message_handler)  # we register our message handler
+# ]

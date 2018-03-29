@@ -49,11 +49,12 @@ def ws_receive(message):
 # a low-level HTTP handler, or just channel_session if all you want is the
 # message.channel_session object without the auth fetching overhead.
 @channel_session_user
-@catch_client_error
+# @catch_client_error
 def chat_join(message):
     # Find the room they requested (by ID) and add ourselves to the send group
     # Note that, because of channel_session_user, we have a message.user
     # object that works just like request.user would. Security!
+    # print(message.user)
     room = get_room_or_error(message["room"], message.user)
 
     # Send a "enter message" to the room if available
@@ -96,7 +97,7 @@ def chat_leave(message):
 
 
 @channel_session_user
-@catch_client_error
+# @catch_client_error
 def chat_send(message):
     if int(message['room']) not in message.channel_session['rooms']:
         raise ClientError("ROOM_ACCESS_DENIED")

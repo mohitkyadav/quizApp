@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
-{% block title %}MultiChat Example{% endblock %}
-{% block header_text %}MultiChat Example{% endblock %}
+{% block title %}quizzie{% endblock %}
+{% block header_text %}quizzie{% endblock %}
 {% block content %}
     <ul class="rooms">
         {% for room in rooms %}
@@ -15,7 +15,7 @@
     </div>
 {% endblock %}
 {% block extra_body %}
-    <script src="http//cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script src="http//cdnjs.cloudflare.com/ajax/libs/reconnecting-websocket/1.0.0/reconnecting-websocket.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/reconnecting-websocket/1.0.0/reconnecting-websocket.min.js"></script>
     <script src="static/js/main.js"></script>
 {% endblock %}
