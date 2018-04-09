@@ -6,7 +6,6 @@ from channels import Group
 from quizzie.settings import MSG_TYPE_MESSAGE
 
 
-@python_2_unicode_compatible
 class Room(models.Model):
     title = models.CharField(max_length=255)
     staff_only = models.BooleanField(default=False)
