@@ -33,3 +33,29 @@ class Room(models.Model):
         self.websocket_group.send(
             {"text": json.dumps(final_msg)}
         )
+
+
+class Answer(models.Model):
+    text = models.CharField(max_length=128, verbose_name='Answer\'s text here.')
+    correct = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.text
+
+
+class Question(models.Model):
+    question_text = models.CharField(max_length=128, verbose_name='Enter question here.')
+    answers = models.ManyToManyField(Answer)
+    is_final = models.BooleanField(default=False)
+
+    def __str__(self):
+        return '{content} - {published}'.format(content=self.question_text, published=self.is_final)
+
+
+class Quiz(models.Model):
+    name = models.CharField(max_length=64, verbose_name='Name of exam')
+    slug = models.SlugField(max_length=64, unique=True)
+    questions = models.ManyToManyField(Question)
+
+    def __str__(self):
+        return self.name
