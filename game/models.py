@@ -1,6 +1,6 @@
 import json
+import uuid
 from django.db import models
-from django.utils.six import python_2_unicode_compatible
 from channels import Group
 
 from quizzie.settings import MSG_TYPE_MESSAGE
@@ -11,7 +11,7 @@ class Room(models.Model):
     staff_only = models.BooleanField(default=False)
     chat_flag = models.BooleanField(default=False)
 
-    def str(self):
+    def __str__(self):
         return self.title
 
     @property
@@ -34,27 +34,32 @@ class Room(models.Model):
         )
 
 
-class Answer(models.Model):
-    text = models.CharField(max_length=128, verbose_name='Answer\'s text here.')
-    correct = models.BooleanField(default=False)
+class Quiz(models.Model):
+    name = models.CharField(max_length=64, verbose_name='Name of exam')
+    id = models.CharField(unique=True, default=uuid.uuid4,
+                          editable=False, max_length=50, primary_key=True)
+    slug = models.SlugField(max_length=64, unique=True)
+    room = models.OneToOneField(Room, null=True)
 
     def __str__(self):
-        return self.text
+        return self.name
 
 
 class Question(models.Model):
+    id = models.CharField(unique=True, default=uuid.uuid4,
+                          editable=False, max_length=50, primary_key=True)
     question_text = models.CharField(max_length=128, verbose_name='Enter question here.')
-    answers = models.ManyToManyField(Answer)
     is_final = models.BooleanField(default=False)
+    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return '{content} - {published}'.format(content=self.question_text, published=self.is_final)
 
 
-class Quiz(models.Model):
-    name = models.CharField(max_length=64, verbose_name='Name of exam')
-    slug = models.SlugField(max_length=64, unique=True)
-    questions = models.ManyToManyField(Question)
+class Option(models.Model):
+    question = models.ForeignKey(Question, on_delete=models.CASCADE, null=True)
+    text = models.CharField(max_length=128, verbose_name='Answer\'s text here.')
+    is_correct = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.name
+        return self.text
