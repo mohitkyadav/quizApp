@@ -96,7 +96,7 @@ $(function () {
 
     // Room join/leave
     $("li.room-link").click(function () {
-        roomId = $(this).attr("data-room-id");
+        var roomId = $(this).attr("data-room-id");
         if (inRoom(roomId)) {
             // Leave room
             $(this).removeClass("joined");
