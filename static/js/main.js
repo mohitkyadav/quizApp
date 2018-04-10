@@ -1,6 +1,6 @@
 $(function () {
     // Correctly decide between ws:// and wss://
-    var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
+    var ws_scheme = window.location.protocol === "https:" ? "wss" : "ws";
     var ws_path = ws_scheme + '://' + window.location.host + "/chat/stream/";
     console.log("Connecting to " + ws_path);
     var socket = new ReconnectingWebSocket(ws_path);
@@ -45,7 +45,7 @@ $(function () {
         } else if (data.leave) {
             console.log("Leaving room " + data.leave);
             $("#room-" + data.leave).remove();
-        } else if (data.message || data.msg_type != 0) {
+        } else if (data.message || data.msg_type !== 0) {
             var msgdiv = $("#room-" + data.room + " .messages");
             var ok_msg = "";
             // msg types are defined in chat/settings.py
