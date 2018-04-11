@@ -6,6 +6,7 @@ from quizzie.settings import MSG_TYPE_LEAVE, MSG_TYPE_ENTER, NOTIFY_USERS_ON_ENT
 from .models import Room
 from .utils import get_room_or_error, catch_client_error
 from .exceptions import ClientError
+from .helpers import get_questions
 
 
 # This decorator copies the user from the HTTP session (only available in
@@ -68,10 +69,15 @@ def chat_join(message):
     # Send a message back that will prompt them to open the room
     # Done server-side so that we could, for example, make people
     # join rooms automatically.
+
+    # Get the JSoN for Quiz here
+    quiz = get_questions(message["room"])
+
     message.reply_channel.send({
         "text": json.dumps({
             "join": str(room.id),
             "title": room.title,
+            "quiz": quiz,
         }),
     })
 
