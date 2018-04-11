@@ -2,7 +2,7 @@ from .models import Quiz, Room, Question, Option
 
 
 def get_options(question):
-    options =  Option.objects.all().filter(question=question)
+    options = Option.objects.all().filter(question=question)
     temp = {}
     cnt = 0
     for option in options:
@@ -10,6 +10,7 @@ def get_options(question):
             "text": option.text,
             "correct": option.is_correct
         }
+        cnt += 1
     return temp
 
 
@@ -59,4 +60,5 @@ def get_questions(room_id):
             "options": options
         }
         quiz_questions[str(counter)] = temp
+        counter += 1
     return quiz_questions
