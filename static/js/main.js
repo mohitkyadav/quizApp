@@ -29,22 +29,42 @@ $(function () {
                 "<div class='room' id='room-" + data.join + "'>" +
                 "<h2>" + data.title + "</h2>" +
                 "<div class='messages'></div>" +
-                "<input><button>Send</button>" +
+                //"<input><button>Send</button>" +
+                "<button>start</button>" +
                 "</div>"
             );
+            // chat send
+            // $("#chats").append(roomdiv);
+            // roomdiv.find("button").on("click", function () {
+            //     socket.send(JSON.stringify({
+            //         "command": "send",
+            //         "room": data.join,
+            //         "message": roomdiv.find("input").val()
+            //     }));
+            //     roomdiv.find("input").val("");
+            // });
             $("#chats").append(roomdiv);
             roomdiv.find("button").on("click", function () {
                 socket.send(JSON.stringify({
-                    "command": "send",
-                    "room": data.join,
-                    "message": roomdiv.find("input").val()
+                    "command": "start_quiz",
+                    "room": data.join
                 }));
-                roomdiv.find("input").val("");
             });
             // Handle leaving
         } else if (data.leave) {
             console.log("Leaving room " + data.leave);
             $("#room-" + data.leave).remove();
+        } else if(data.start_quiz) {
+            var msgdiv = $("#room-" + data.room + " .messages");
+            var ok_msg = "<div class='message'>" +
+                        "<span class='body'>" + data.question + "</span>" +
+                        "<li>" + data.choice_a +"</li>" +
+                        "<li>" + data.choice_b +"</li>" +
+                        "<li>" + data.choice_c +"</li>" +
+                        "</div>";
+            msgdiv.append(ok_msg);
+            msgdiv.scrollTop(msgdiv.prop("scrollHeight"));
+
         } else if (data.message || data.msg_type !== 0) {
             var msgdiv = $("#room-" + data.room + " .messages");
             var ok_msg = "";
@@ -84,6 +104,7 @@ $(function () {
             }
             msgdiv.append(ok_msg);
             msgdiv.scrollTop(msgdiv.prop("scrollHeight"));
+
         } else {
             console.log("Cannot handle message!");
         }

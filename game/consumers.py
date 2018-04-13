@@ -71,13 +71,11 @@ def chat_join(message):
     # join rooms automatically.
 
     # Get the JSoN for Quiz here
-    quiz = get_questions(message["room"])
 
     message.reply_channel.send({
         "text": json.dumps({
             "join": str(room.id),
             "title": room.title,
-            "quiz": quiz,
         }),
     })
 
@@ -109,3 +107,22 @@ def chat_send(message):
         raise ClientError("ROOM_ACCESS_DENIED")
     room = get_room_or_error(message["room"], message.user)
     room.send_message(message["message"], message.user)
+
+
+@channel_session_user
+def start_quiz(message):
+    room = get_room_or_error(message["room"], message.user)
+    quiz = get_questions(message["room"])
+    print(quiz['0'])
+    message.reply_channel.send({
+        "text": json.dumps({
+            "room": str(room.id),
+            "start_quiz": True,
+            "title": room.title,
+            "q_id": quiz['0']['qid'],
+            "question": quiz['0']['question'],
+            "choice_a": quiz['0']['options']['0']['text'],
+            "choice_b": quiz['0']['options']['1']['text'],
+            "choice_c": quiz['0']['options']['2']['text'],
+        }),
+    })
