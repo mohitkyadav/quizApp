@@ -1,4 +1,4 @@
-from .models import Quiz, Room, Question, Option
+from .models import Quiz, Room, Question, Option, Response
 
 
 def get_options(question):
@@ -62,3 +62,13 @@ def get_questions(room_id):
         quiz_questions[str(counter)] = temp
         counter += 1
     return quiz_questions
+
+
+def set_response(q_id, selected_choice, user):
+    question = Question.objects.get(id=q_id)
+    options = Option.objects.filter(question=question)
+    index = int(selected_choice)
+    is_correct = options[index-1].is_correct
+    response = Response(question=question, user=user, selected_option=options[index-1], is_correct=is_correct)
+    # response.save()
+    print(response)

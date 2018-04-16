@@ -25,12 +25,18 @@ $(function () {
         // Handle joining
         if (data.join) {
             console.log("Joining room " + data.join);
+            var q_no = 0;
             var roomdiv = $(
                 "<div class='room' id='room-" + data.join + "'>" +
-                "<h2>" + data.title + "</h2>" +
-                "<div class='messages'></div>" +
-                //"<input><button>Send</button>" +
-                "<button>start</button>" +
+                    "<h2>" + data.title + "</h2>" +
+                    "<div class='message' q_id=''>" +
+                    "<span class='body'></span>" +
+                        "<h3 choice='' id='choice_a' class='choice'></h3>" +
+                        "<h3 choice='' id='choice_b' class='choice'></h3>" +
+                        "<h3 choice='' id='choice_c' class='choice'></h3>" +
+                    "</div>" +
+                    //"<input><button>Send</button>" +
+                    "<button>start</button>" +
                 "</div>"
             );
             // chat send
@@ -50,22 +56,70 @@ $(function () {
                     "room": data.join
                 }));
             });
+// Respond when a choice is clicked
+            var choice_first = roomdiv.find("#choice_a");
+            var choice_second = roomdiv.find("#choice_b");
+            var choice_third = roomdiv.find("#choice_c");
+
+            choice_first.on("click", function () {
+                var res_q_id = roomdiv.find(".body")[0].getAttribute("q_id");
+                q_no = q_no + 1;
+                console.log(q_no);
+                socket.send(JSON.stringify({
+                    "command": "submit",
+                    "room": data.join,
+                    "q_id": res_q_id,
+                    "selected_choice": "1",
+                    "next_q": q_no
+                }));
+            });
+            choice_second.on("click", function () {
+               var res_q_id = roomdiv.find(".body")[0].getAttribute("q_id");
+               q_no = q_no + 1;
+                socket.send(JSON.stringify({
+                    "command": "submit",
+                    "room": data.join,
+                    "q_id": res_q_id,
+                    "selected_choice": "2",
+                    "next_q": q_no
+                }));
+            });
+            choice_third.on("click", function () {
+               var res_q_id = roomdiv.find(".body")[0].getAttribute("q_id");
+               q_no = q_no + 1;
+                socket.send(JSON.stringify({
+                    "command": "submit",
+                    "room": data.join,
+                    "q_id": res_q_id,
+                    "selected_choice": "3",
+                    "next_q": q_no
+                }));
+            });
+// Respond when a choice is clicked
             // Handle leaving
         } else if (data.leave) {
             console.log("Leaving room " + data.leave);
             $("#room-" + data.leave).remove();
         } else if(data.start_quiz) {
-            var msgdiv = $("#room-" + data.room + " .messages");
-            var ok_msg = "<div class='message'>" +
-                        "<span class='body'>" + data.question + "</span>" +
-                        "<li>" + data.choice_a +"</li>" +
-                        "<li>" + data.choice_b +"</li>" +
-                        "<li>" + data.choice_c +"</li>" +
-                        "</div>";
-            msgdiv.append(ok_msg);
-            msgdiv.scrollTop(msgdiv.prop("scrollHeight"));
+            var msgDiv = $("#room-" + data.room + " .body");
+            var q_id = data.q_id;
+            msgDiv[0].innerHTML = data.question;
+            msgDiv[0].setAttribute("q_id", data.q_id);
+            var choices = $("#room-" + data.room + " .choice");
+            choices[0].innerHTML = data.choice_a;
+            choices[1].innerHTML = data.choice_b;
+            choices[2].innerHTML = data.choice_c;
 
-        } else if (data.message || data.msg_type !== 0) {
+            choices[0].setAttribute("choice", data.choice_a);
+            choices[1].setAttribute("choice", data.choice_b);
+            choices[2].setAttribute("choice", data.choice_c);
+
+            //msgdiv.scrollTop(msgdiv.prop("scrollHeight"));
+
+        } else if(data.end_quiz) {
+            console.log("Thanks for your precious time.")
+        }
+        else if (data.message || data.msg_type !== 0) {
             var msgdiv = $("#room-" + data.room + " .messages");
             var ok_msg = "";
             // msg types are defined in chat/settings.py
@@ -113,7 +167,7 @@ $(function () {
     // Says if we joined a room or not by if there's a div for it
     function inRoom(roomId) {
         return $("#room-" + roomId).length > 0;
-    };
+    }
 
     // Room join/leave
     $("li.room-link").click(function () {

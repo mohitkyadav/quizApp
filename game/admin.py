@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Room, Question, Option, Quiz
+from .models import Room, Question, Option, Quiz, Response
 
 
 admin.site.register(
@@ -11,3 +11,4 @@ admin.site.register(
 admin.site.register(Question)
 admin.site.register(Option)
 admin.site.register(Quiz)
+admin.site.register(Response)

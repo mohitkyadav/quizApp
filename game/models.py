@@ -1,6 +1,7 @@
 import json
 import uuid
 from django.db import models
+from django.conf import settings
 from channels import Group
 
 from quizzie.settings import MSG_TYPE_MESSAGE
@@ -53,7 +54,7 @@ class Question(models.Model):
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
-        return '{content} - {published}'.format(content=self.question_text, published=self.is_final)
+        return self.question_text
 
 
 class Option(models.Model):
@@ -63,3 +64,13 @@ class Option(models.Model):
 
     def __str__(self):
         return self.text
+
+
+class Response(models.Model):
+    question = models.ForeignKey(Question, on_delete=models.CASCADE, null=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL)
+    selected_option = models.ForeignKey(Option, on_delete=models.CASCADE, null=True)
+    is_correct = models.BooleanField(blank=True, default=False)
+
+    def __str__(self):
+        return self.user.username + ' : ' + self.question.question_text + ' : ' + self.selected_option.text

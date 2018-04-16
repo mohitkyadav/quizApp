@@ -6,7 +6,7 @@ from quizzie.settings import MSG_TYPE_LEAVE, MSG_TYPE_ENTER, NOTIFY_USERS_ON_ENT
 from .models import Room
 from .utils import get_room_or_error, catch_client_error
 from .exceptions import ClientError
-from .helpers import get_questions
+from .helpers import get_questions, set_response
 
 
 # This decorator copies the user from the HTTP session (only available in
@@ -113,7 +113,6 @@ def chat_send(message):
 def start_quiz(message):
     room = get_room_or_error(message["room"], message.user)
     quiz = get_questions(message["room"])
-    print(quiz['0'])
     message.reply_channel.send({
         "text": json.dumps({
             "room": str(room.id),
@@ -126,3 +125,33 @@ def start_quiz(message):
             "choice_c": quiz['0']['options']['2']['text'],
         }),
     })
+
+
+@channel_session_user
+def next_question(message):
+    room = get_room_or_error(message["room"], message.user)
+    quiz = get_questions(message["room"])
+    set_response(message["q_id"], message["selected_choice"], message.user)
+    quiz = get_questions(message["room"])
+    if message["next_q"] < len(quiz):
+        q_no = str(message["next_q"])
+        message.reply_channel.send({
+            "text": json.dumps({
+                "room": str(room.id),
+                "start_quiz": True,
+                "title": room.title,
+                "q_id": quiz[q_no]['qid'],
+                "question": quiz[q_no]['question'],
+                "choice_a": quiz[q_no]['options']['0']['text'],
+                "choice_b": quiz[q_no]['options']['1']['text'],
+                "choice_c": quiz[q_no]['options']['2']['text'],
+            }),
+        })
+    else:
+        message.reply_channel.send({
+            "text": json.dumps({
+                "room": str(room.id),
+                "end_quiz": True,
+                "title": room.title,
+            }),
+        })
