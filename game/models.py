@@ -57,6 +57,9 @@ class Question(models.Model):
     def __str__(self):
         return self.question_text
 
+    def get_options(self):
+        return Option.objects.filter(question=self)
+
 
 class Option(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE, null=True)

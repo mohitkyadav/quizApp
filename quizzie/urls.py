@@ -10,4 +10,5 @@ urlpatterns = [
     url(r'^accounts/logout/$', logout, name='logout'),
     url(r'^auth/', include('social_django.urls', namespace='social')),
     url(r'^admin/', admin.site.urls),
+    url(r'^quiz/', include('game.urls', namespace='quiz')),
 ]

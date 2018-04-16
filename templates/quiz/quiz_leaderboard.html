@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block title %}quizzie{% endblock %}
+{% block content %}
+    <h1>{{ quiz_name }}</h1>
+
+    <br>
+    <h2>Questions in quiz</h2>
+    {% for question in questions %}
+        <div>
+            <h2>{{ question.question_text }}</h2>
+            {% for choice in question.get_options %}
+                <h3>{{ choice.text }}</h3>
+            {% endfor %}
+            <br>
+            <br>
+        </div>
+    {% endfor %}
+    <br>
+    <br>
+    <h1>LEADERBOARD</h1>
+    <br>
+
+    {% for score in scores %}
+        <li><h3>{{ score }}</h3></li>
+        <br>
+    {% endfor %}
+
+{% endblock %}
+{% block extra_body %}
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/reconnecting-websocket/1.0.0/reconnecting-websocket.min.js"></script>
+{% endblock %}
