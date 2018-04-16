@@ -70,5 +70,4 @@ def set_response(q_id, selected_choice, user):
     index = int(selected_choice)
     is_correct = options[index-1].is_correct
     response = Response(question=question, user=user, selected_option=options[index-1], is_correct=is_correct)
-    # response.save()
-    print(response)
+    response.save()

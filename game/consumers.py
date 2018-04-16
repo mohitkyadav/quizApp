@@ -14,7 +14,10 @@ from .helpers import get_questions, set_response
 # in all consumers with the same reply_channel, so all three here)
 @channel_session_user_from_http
 def ws_connect(message):
+    # users = ['test', 'test2']
     message.reply_channel.send({"accept": True})
+    # for u in users:
+    #     Group("%s" % u).add(message.reply_channel)
     message.channel_session['rooms'] = []
 
 
