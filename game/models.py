@@ -1,5 +1,6 @@
 import json
 import uuid
+import datetime
 from django.db import models
 from django.conf import settings
 from channels import Group
@@ -74,3 +75,16 @@ class Response(models.Model):
 
     def __str__(self):
         return self.user.username + ' : ' + self.question.question_text + ' : ' + self.selected_option.text
+
+
+class Score(models.Model):
+    id = models.CharField(unique=True, default=uuid.uuid4,
+                          editable=False, max_length=50, primary_key=True)
+    date = models.DateTimeField(default=datetime.datetime.now())
+    user = models.ForeignKey(settings.AUTH_USER_MODEL)
+    quiz = models.ForeignKey(Quiz)
+    max_score = models.IntegerField(blank=True, null=True)
+    score = models.IntegerField(blank=True, null=True)
+
+    def __str__(self):
+        return self.user.username + ' : ' + str(self.date) + ' : ' + str(self.score)

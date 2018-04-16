@@ -1,4 +1,4 @@
-from .models import Quiz, Room, Question, Option, Response
+from .models import Quiz, Room, Question, Option, Response, Score
 
 
 def get_options(question):
@@ -71,3 +71,18 @@ def set_response(q_id, selected_choice, user):
     is_correct = options[index-1].is_correct
     response = Response(question=question, user=user, selected_option=options[index-1], is_correct=is_correct)
     response.save()
+
+
+def set_score(quiz_id, user):
+    quiz = get_quiz(quiz_id)
+    questions = Question.objects.filter(quiz=quiz)
+    max_score = len(questions)
+    score = 0
+    for q in questions:
+        responses = Response.objects.filter(question=q, user=user)
+        for r in responses:
+            if r.selected_option.is_correct:
+                score = score + 1
+    score = Score(user=user, score=score, max_score=max_score, quiz=quiz)
+    score.save()
+    return score

@@ -3,10 +3,10 @@ from channels import Channel
 from channels.auth import channel_session_user_from_http, channel_session_user
 
 from quizzie.settings import MSG_TYPE_LEAVE, MSG_TYPE_ENTER, NOTIFY_USERS_ON_ENTER_OR_LEAVE_ROOMS
-from .models import Room
+from .models import Room, Score
 from .utils import get_room_or_error, catch_client_error
 from .exceptions import ClientError
-from .helpers import get_questions, set_response
+from .helpers import get_questions, set_response, set_score
 
 
 # This decorator copies the user from the HTTP session (only available in
@@ -135,6 +135,7 @@ def next_question(message):
     room = get_room_or_error(message["room"], message.user)
     quiz = get_questions(message["room"])
     set_response(message["q_id"], message["selected_choice"], message.user)
+
     quiz = get_questions(message["room"])
     if message["next_q"] < len(quiz):
         q_no = str(message["next_q"])
@@ -150,11 +151,25 @@ def next_question(message):
                 "choice_c": quiz[q_no]['options']['2']['text'],
             }),
         })
+    elif message["next_q"] is len(quiz):
+        score = set_score(message["room"], message.user)
+        print(score)
+        message.reply_channel.send({
+            "text": json.dumps({
+                "room": str(room.id),
+                "end_quiz": True,
+                "title": room.title,
+                "time": str(score.date),
+                "score": str(score.score),
+                "max_score": str(score.max_score),
+            }),
+        })
     else:
         message.reply_channel.send({
             "text": json.dumps({
                 "room": str(room.id),
                 "end_quiz": True,
                 "title": room.title,
+                "err": "Something went wrong :/",
             }),
         })

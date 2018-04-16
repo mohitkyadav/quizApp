@@ -117,7 +117,20 @@ $(function () {
             //msgdiv.scrollTop(msgdiv.prop("scrollHeight"));
 
         } else if(data.end_quiz) {
-            console.log("Thanks for your precious time.")
+            var msgDiv = $("#room-" + data.room + " .body");
+            msgDiv[0].innerHTML = "Thanks for your time.  :)";
+            var choices = $("#room-" + data.room + " .choice");
+            choices[0].innerHTML = data.time;
+            choices[1].innerHTML = "Max Score : " + data.max_score;
+            choices[2].innerHTML = "Score : " + data.score;
+
+            choices[0].setAttribute("id", "time");
+            choices[1].setAttribute("id", "max_score");
+            choices[2].setAttribute("id", "score");
+
+            choices[0].setAttribute("class", "time");
+            choices[1].setAttribute("class", "max_score");
+            choices[2].setAttribute("class", "score");
         }
         else if (data.message || data.msg_type !== 0) {
             var msgdiv = $("#room-" + data.room + " .messages");
