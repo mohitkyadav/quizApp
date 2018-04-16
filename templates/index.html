@@ -2,14 +2,17 @@
 {% load staticfiles %}
 
 {% block title %}quizzie{% endblock %}
-{% block header_text %}quizzie{% endblock %}
 {% block content %}
+    {% if user.is_authenticated %}
     <ul class="rooms">
         {% for room in rooms %}
             <li class="room-link" data-room-id="{{ room.id }}">{{ room }}</li>
         {% empty %}
             <p class="empty">No chat rooms defined. Maybe make some in the <a href="{% url 'admin:index' %}">admin</a>?</p>
         {% endfor %}
+    {% else %}
+        <a class="lead" href="{% url 'login' %}">Log in</a>
+    {% endif %}
     </ul>
 
     <div id="chats">

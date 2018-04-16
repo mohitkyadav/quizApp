@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 import os
 from django.conf import settings
 
+from . import secrets
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -27,7 +29,7 @@ SECRET_KEY = 'dh9kw5s8@@1hq(zjsj8%p%i$n(!#35ryl_m+-j8!-!agor*mlx'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -41,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'game',
     'channels',
+    'social_django'
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -67,10 +70,17 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
             ],
         },
     },
 ]
+
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.google.GoogleOAuth2',  # for Google authentication
+    'django.contrib.auth.backends.ModelBackend',
+)
 
 WSGI_APPLICATION = 'quizzie.wsgi.application'
 
@@ -142,7 +152,9 @@ STATICFILES_DIRS = [
     '/var/www/static/',
 ]
 
-LOGIN_REDIRECT_URL = "/"
+LOGIN_URL = 'login'
+
+LOGIN_REDIRECT_URL = '/'
 
 LOGOUT_REDIRECT_URL = "/"
 
@@ -171,3 +183,6 @@ MESSAGE_TYPES_LIST = getattr(settings, 'MESSAGE_TYPES_LIST',
                               MSG_TYPE_MUTED,
                               MSG_TYPE_ENTER,
                               MSG_TYPE_LEAVE])
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = secrets.MY_OAUTH_KEY
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = secrets.MY_OAUTH_SECRET

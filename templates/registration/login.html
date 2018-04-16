@@ -1,12 +1,15 @@
 {% extends "base.html" %}
 
 {% block title %}Login{% endblock %}
-{% block header_text %}Login{% endblock %}
 
 {% block content %}
-    <form action="." method="POST">
-        {{ form }}
-        {% csrf_token %}
-        <button>Login</button>
-    </form>
+    <h2>Login</h2>
+  <form method="post" action=".">
+    {{ form.as_p }}
+      {% csrf_token %}
+    <button type="submit">Login</button>
+  </form>
+   <br>
+  <p><strong>-- OR --</strong></p>
+  <a href="{% url 'social:begin' 'google-oauth2' %}">Login with Google</a><br>
 {% endblock %}
