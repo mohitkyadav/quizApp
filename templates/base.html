@@ -9,12 +9,23 @@
     {% block extra_head %}{% endblock %}
 </head>
 <body>
-    <header>
-        <h1>{% block header_text %}{% endblock %}</h1>
+
         {% if user.is_authenticated %}
-            <a href="{% url 'logout' %}">Logout</a>
+        <header>
+            <ul style="float: none!important;">
+                <div>
+                    <h1 style="float: left;">Hello, {{ user.first_name }}</h1>
+                    <li style="float: right"><a href="#"> Profile </a></li><br />
+                    <li style="float: right"><a href="{% url 'logout' %}">Logout</a></li>
+                </div>
+            </ul>
+        </header>
+            {% else %}
+            <header>
+            Welcome to quizze!!1
+            </header>
         {% endif %}
-    </header>
+
     <section>
         {% block content %}
         {% endblock %}
