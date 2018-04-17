@@ -1,0 +1,14 @@
+.flt {
+    float: right;
+}
+
+.welcome {
+    color: #FFFFFF;
+    float: left;
+    margin-right: 63%;
+}
+
+.padder {
+    padding-right: 40%;
+    padding-left: 30%;
+}
