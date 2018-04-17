@@ -30,11 +30,11 @@ $(function () {
                 "<div class='room' id='room-" + data.join + "'>" +
                     "<h2>" + "Quiz Topic:" + data.title + "</h2>" +
                      "<div class='message' q_id=''>" +
-                    "<ol type='a'><span class='body'></span> " +
-                        "<a href='#'><li choice='' id='choice_a' class='choice'></li></a>" +
-                        "<a href='#'><li choice='' id='choice_b' class='choice'></li></a>" +
-                        "<a href='#'> <li choice='' id='choice_c' class='choice'></li></a>" +
-                    "</ol></div>" +
+                    "<span class='body'></span> " +
+                        "<a href='#'><h3 choice='' id='choice_a' class='choice'></h3></a>" +
+                        "<a href='#'><h3 choice='' id='choice_b' class='choice'></h3></a>" +
+                        "<a href='#'><h3 choice='' id='choice_c' class='choice'></h3></a>" +
+                    "</div>" +
                     //"<input><button>Send</button>" +
                     "<button type='button' class='btn btncol'>Start</button>" +
                 "</div>"
