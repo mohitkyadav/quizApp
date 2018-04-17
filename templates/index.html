@@ -1,20 +1,24 @@
 {% extends "base.html" %}
 {% load staticfiles %}
 
-{% block title %}quizzie{% endblock %}
+{% block title %}Quiz Home{% endblock %}
 {% block content %}
     {% if user.is_authenticated %}
-    <ul class="rooms">
+        <div class="mybg">
+        <span style="font-size: xx-large">Avaliable Quizes:</span>
+    <ol type="1" class="rooms">
         {% for room in rooms %}
-            <li class="room-link" data-room-id="{{ room.id }}">{{ room }}</li>
-            <a href="{% url 'game:quiz_leaderboard' room.quiz.id %}">{{ Room }} leaderboard </a>
+            <a href="#" style="font-size: x-large"><li class="room-link" data-room-id="{{ room.id }}">{{ room }}</li></a>
+            <span style="font-size: large">Current Leaderboard of this quiz:</span>
+            <a href="{% url 'game:quiz_leaderboard' room.quiz.id %}" style="font-size:x-large">{{ Room }} leaderboard </a>
         {% empty %}
             <p class="empty">No chat rooms defined. Maybe make some in the <a href="{% url 'admin:index' %}">admin</a>?</p>
         {% endfor %}
+        </div>
     {% else %}
         <a class="lead" href="{% url 'login' %}">Log in</a>
     {% endif %}
-    </ul>
+    </ol>
 
     <div id="chats">
     </div>

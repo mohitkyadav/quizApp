@@ -139,6 +139,7 @@ def next_question(message):
     quiz = get_questions(message["room"])
     if message["next_q"] < len(quiz):
         q_no = str(message["next_q"])
+        print(q_no)
         message.reply_channel.send({
             "text": json.dumps({
                 "room": str(room.id),
@@ -149,6 +150,7 @@ def next_question(message):
                 "choice_a": quiz[q_no]['options']['0']['text'],
                 "choice_b": quiz[q_no]['options']['1']['text'],
                 "choice_c": quiz[q_no]['options']['2']['text'],
+                "q_no": str(q_no)
             }),
         })
     elif message["next_q"] is len(quiz):

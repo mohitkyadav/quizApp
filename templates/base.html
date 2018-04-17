@@ -33,9 +33,9 @@
         </div>
     </nav>
     {% if user.is_authenticated %}
-     <h3>Hello, <a class="nav-link" href="#">{{ user }}</a></h3>
+     &nbsp;<h2>Hello, <a class="nav-link" href="#">{{ user }}</a></h2>
     {% endif %}
-    <div class="container"
+    <div class="container mybg">
         {% block content %}
         {% endblock %}
 
