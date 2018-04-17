@@ -5,5 +5,6 @@ from . import views
 app_name = 'game'
 
 urlpatterns = [
-    url(r'^(?P<quiz_id>.+)/$', views.quiz_leaderboard, name='quiz_leaderboard'),
+    url(r'^leaderboard/(?P<quiz_id>.+)/$', views.quiz_leaderboard, name='quiz_leaderboard'),
+    url(r'^profile/$', views.profile, name='profile')
 ]

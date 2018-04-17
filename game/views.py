@@ -1,6 +1,9 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from .models import Room, Quiz, Score, Room, Question
+from django.contrib.auth.models import User
+from django.http import JsonResponse
+
 
 
 @login_required
@@ -24,3 +27,20 @@ def quiz_leaderboard(request, quiz_id):
         "questions": questions,
         "scores": reversed(scores),
     })
+
+
+def profile(request):
+    if request.user.is_authenticated():
+        username = request.user.username
+        # print('user mila\nsadasds\ndfsdfds\n')
+        user = User.objects.get(username=username)
+        # print(user)
+        scores = Score.objects.filter(user=user)
+
+        return render(request, "profile.html", {
+            # "quizzes": quizzes,
+            "scores": scores,
+        })
+    else:
+        data = {'Error': '404: Not Found'}
+    return JsonResponse(data)

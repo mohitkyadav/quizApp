@@ -91,3 +91,15 @@ class Score(models.Model):
 
     def __str__(self):
         return self.user.username + ' : ' + str(self.date) + ' : ' + str(self.score)
+
+    def get_quiz(self):
+        return self.quiz
+
+    def get_score(self):
+        return self.score
+
+    def get_max_score(self):
+        return self.max_score
+
+    def get_quiz_id(self):
+        return self.quiz.id

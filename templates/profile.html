@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block title %}Profile{% endblock %}
+{% block content %}
+
+    {% if user.is_authenticated %}
+        {% if scores %}
+            <table border="3px">
+            <tr align="center">
+                <th>Quiz Name</th>
+                <td>Maximum Score</td>
+                <td>Score Obtained</td>
+            </tr>
+            {% for score in scores %}
+                <tr align="center">
+                <th>
+                   <a href="{% url 'game:quiz_leaderboard' score.get_quiz_id %}">{{ score.get_quiz }}</a>
+                </th>
+                <td>
+                    {{ score.get_max_score }}
+                </td>
+                <td>
+                    {{ score.get_score }}
+                </td>
+                </tr>
+            {% endfor %}
+            </table>
+        {% endif %}
+    {% else %}
+        You aren't logged in.
+    {% endif %}
+
+{% endblock %}
